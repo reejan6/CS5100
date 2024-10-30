@@ -1,23 +1,70 @@
+import pandas as pd
 import numpy as np
-import pickle
+import nltk
+from gensim.models import KeyedVectors
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-# load train, val, test data from preprocess notebooks
+# import data
+text_df = pd.read_pickle("merged_training.pkl")
 
-X_train = np.load('text_embeddings_train.npy', allow_pickle=True)
-X_val = np.load('text_embeddings_val.npy', allow_pickle=True)
-X_test = np.load('text_embeddings_test.npy', allow_pickle=True)
+# tokenize text
+data_by_words = []
+# loop through texts
+for i in text_df['text']:
+    # get words, tokenize
+    value = nltk.word_tokenize(i)
+    data_by_words.append(value)
+    
+# encode y labels
+labelencoder = LabelEncoder()
+y = list(text_df['emotions'])
+y = labelencoder.fit_transform(y)
 
-file = open('train_y.pkl','rb')
-y_train = pickle.load(file)
-file = open('val_y.pkl','rb')
-y_val = pickle.load(file)
-file = open('test_y.pkl','rb')
-y_test = pickle.load(file)
+# get embedding look up table for embedding layer
+embed_lookup = KeyedVectors.load_word2vec_format('word2vec.model', binary = False)
+
+# get embedding idx for each word in each text
+def get_embed_idx(embed_lookup, data_by_words):
+
+    embed_idx = []
+    for word_doc in data_by_words:
+        ints = []
+        for word in word_doc:
+            try:
+                idx = embed_lookup.key_to_index[word]
+            except: 
+                idx = 0
+            ints.append(idx)
+        embed_idx.append(ints)
+    
+    return embed_idx
+
+embed_indexed_texts = get_embed_idx(embed_lookup, data_by_words)
+vocab_size = len(embed_lookup.key_to_index)
+
+# to make sure inputs are consistent lengtgs
+def pad_features(embed_indexed_texts, seq_length):
+    
+    # getting the correct rows x cols shape
+    features = np.zeros((len(embed_indexed_texts), seq_length), dtype=int)
+
+    for i, row in enumerate(embed_indexed_texts):
+        features[i, -len(row):] = np.array(row)[:seq_length]
+    
+    return features
+
+seq_length = 200
+X_features = pad_features(embed_indexed_texts, seq_length)
+
+# split into train, val, test
+X_train, X_val_test, y_train, y_val_test = train_test_split(X_features, y, test_size=0.2)
+X_val, X_test, y_val, y_test = train_test_split(X_val_test, y_val_test, test_size=0.50)
 
 # create Tensor datasets
 train_data = TensorDataset(torch.from_numpy(X_train), torch.from_numpy(y_train))
@@ -40,42 +87,55 @@ lr = 0.0001
 
 # Text CNN Sentiment Classifier
 class TextCNN(nn.Module):
-    def __init__(self, num_filters, num_classes, dropout):
+    def __init__(self, embed_model, embedding_dim, vocab_size,
+                 num_filters, num_classes, dropout, kernel_sizes):
         super(TextCNN, self).__init__()
-        self.convs = nn.ModuleList([
-            nn.Conv1d(100, num_filters, kernel_size=1),  
-            nn.Conv1d(100, num_filters, kernel_size=1),   
-            nn.Conv1d(100, num_filters, kernel_size=1),   
-        ])
-        self.fc = nn.Linear(3 * num_filters, num_classes)
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.embedding.weight = nn.Parameter(torch.from_numpy(embed_model.vectors))
+        self.convs = nn.ModuleList(
+            nn.ModuleList([
+            nn.Conv2d(1, num_filters, (k, embedding_dim), padding = (k - 2,0)) 
+            for k in kernel_sizes])
+        )
+        self.fc = nn.Linear(len(kernel_sizes) * num_filters, num_classes)
         self.dropout = nn.Dropout(dropout)
+        self.sig = nn.Sigmoid()
+    
+    def conv_and_pool(self, x, conv):
+        # squeeze last dim to get size: (batch_size, num_filters, conv_seq_length)
+        x = F.relu(conv(x)).squeeze(3)
+        
+        # 1D pool over conv_seq_length
+        x_max = F.max_pool1d(x, x.size(2)).squeeze(2)
+        return x_max
     
     def forward(self, x):
+        # embedded vectors
+        embeds = self.embedding(x) 
+        embeds = embeds.unsqueeze(1)
         
-        # shape is (batch_size, embedding_dim, sequence_length)
-        x = x.unsqueeze(2)
+        # get output of each conv-pool layer
+        conv_results = [self.conv_and_pool(embeds, conv) for conv in self.convs]
         
-        # apply convolution and ReLU, followed by max pooling
-        conv_outputs = [
-            F.relu(conv(x)).max(dim=2)[0]
-            for conv in self.convs
-        ]
-        
-        # concatenate the output of each convolution layer
-        x = torch.cat(conv_outputs, dim=1)
-        
-        # apply dropout
+        # concatenate results and add dropout
+        x = torch.cat(conv_results, 1)
         x = self.dropout(x)
         
-        # fully connected layer for classification
-        output = self.fc(x)
-        return output
+        # final logit
+        logit = self.fc(x) 
+        
+        # sigmoid-activated --> a class score
+        return self.sig(logit)
 
 # Instantiate the model
 net = TextCNN(
+    embed_model=embed_lookup,
+    embedding_dim=100,
+    vocab_size=vocab_size,
     num_filters=num_filters,
     num_classes=num_classes,
-    dropout=dropout
+    dropout=dropout,
+    kernel_sizes=[3,4,5]
 )
 
 # Loss and Optimizer
@@ -132,7 +192,7 @@ def train(net, train_loader, epochs, print_every=100):
                       f"Val Loss: {np.mean(val_losses)}")
 
 # training params
-epochs = 100
+epochs = 10
 print_every = 100
 
 train(net, train_loader, epochs, print_every=print_every)
