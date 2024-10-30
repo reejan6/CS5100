@@ -85,7 +85,7 @@ num_filters = 100
 dropout = 0.5
 lr = 0.0001
 
-# Text CNN Sentiment Classifier
+# Text CNN Sentiment Classifier for word embeddings and an embedding layer
 class TextCNN(nn.Module):
     def __init__(self, embed_model, embedding_dim, vocab_size,
                  num_filters, num_classes, dropout, kernel_sizes):

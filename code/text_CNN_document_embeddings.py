@@ -38,7 +38,7 @@ num_filters = 100
 dropout = 0.5
 lr = 0.0001
 
-# Text CNN Sentiment Classifier
+# Text CNN Sentiment Classifier for document embedding input
 class TextCNN(nn.Module):
     def __init__(self, num_filters, num_classes, dropout):
         super(TextCNN, self).__init__()
