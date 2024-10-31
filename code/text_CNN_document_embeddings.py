@@ -130,6 +130,13 @@ def train(net, train_loader, epochs, print_every=100):
                       f"Step: {counter}...",
                       f"Loss: {loss.item()}...",
                       f"Val Loss: {np.mean(val_losses)}")
+    # Save the trained model final checkpoint
+    torch.save({
+        'epoch': epochs,  
+        'model_state_dict': net.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+    }, 'code/text_document_embeddings/model_checkpoint.pth')
 
 # training params
 epochs = 100
