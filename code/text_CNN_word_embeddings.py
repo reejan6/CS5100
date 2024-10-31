@@ -12,7 +12,7 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 
 # import data
-text_df = pd.read_pickle("merged_training.pkl")
+text_df = pd.read_pickle("data/merged_training.pkl")
 
 # tokenize text
 data_by_words = []
