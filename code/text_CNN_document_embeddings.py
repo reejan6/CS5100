@@ -5,6 +5,7 @@ from torch.utils.data import TensorDataset, DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 # load train, val, test data from preprocess notebooks
 
@@ -89,10 +90,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def train(net, train_loader, epochs, print_every=100):
 
     counter = 0 
+    epoch_train_loss = []
+    epoch_val_loss = []
     
     # train for some number of epochs
     net.train()
     for e in range(epochs):
+        running_train_loss = 0.0
 
         # batch loop
         for inputs, labels in train_loader:
@@ -110,12 +114,16 @@ def train(net, train_loader, epochs, print_every=100):
             loss = criterion(output, labels)
             loss.backward()
             optimizer.step()
+            
+            running_train_loss += loss.item()
 
             # loss stats
             if counter % print_every == 0:
                 # Get validation loss
                 val_losses = []
                 net.eval()
+                running_val_loss = 0.0
+                
                 for inputs, labels in valid_loader:
 
                     inputs, labels = inputs.to(device), labels.to(device)
@@ -124,19 +132,37 @@ def train(net, train_loader, epochs, print_every=100):
                     val_loss = criterion(output, labels)
 
                     val_losses.append(val_loss.item())
+                    running_val_loss += val_loss.item()
 
                 net.train()
                 print(f"Epoch: {e+1}/{epochs}...",
                       f"Step: {counter}...",
                       f"Loss: {loss.item()}...",
                       f"Val Loss: {np.mean(val_losses)}")
+        
+        # Average training loss for the epoch
+        avg_train_loss = running_train_loss / len(train_loader)
+        epoch_train_loss.append(avg_train_loss)
+        
+        # Average validation loss for the epoch
+        avg_val_loss = running_val_loss / len(valid_loader)
+        epoch_val_loss.append(avg_val_loss)
+                
     # Save the trained model final checkpoint
     torch.save({
         'epoch': epochs,  
         'model_state_dict': net.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'loss': loss,
-    }, 'code/text_document_embeddings/model_checkpoint.pth')
+    }, 'code/document_embedding_model_checkpoint.pth')
+    
+    # save train and val loss plot
+    plt.plot(epoch_train_loss, label='Training Loss')
+    plt.plot(epoch_val_loss, label='Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Training and Validation Loss over Epochs')
+    plt.savefig('code/Text_loss_document_embedding_plot.png')
 
 # training params
 epochs = 100
