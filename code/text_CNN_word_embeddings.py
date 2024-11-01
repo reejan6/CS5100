@@ -221,6 +221,7 @@ def train(net, train_loader, epochs, print_every=100):
     plt.plot(epoch_val_loss, label='Validation Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
+    plt.legend(['Train', 'Val'], loc='upper left')
     plt.title('Training and Validation Loss over Epochs')
     plt.savefig('code/Text_loss_word_embedding_plot.png')
 
