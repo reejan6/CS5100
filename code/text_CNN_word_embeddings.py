@@ -49,7 +49,7 @@ def get_embed_idx(embed_lookup, data_by_words):
 embed_indexed_texts = get_embed_idx(embed_lookup, data_by_words)
 vocab_size = len(embed_lookup.key_to_index)
 
-# to make sure inputs are consistent lengtgs
+# to make sure inputs are consistent lengths
 def pad_features(embed_indexed_texts, seq_length):
     
     # getting the correct rows x cols shape
