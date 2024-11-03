@@ -7,7 +7,7 @@ from torch.utils.data import TensorDataset, DataLoader
 import torch.nn.functional as F
 
 # load in audio data
-filename = 'Audio/features+labels.npy'
+filename = 'C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/features+labels.npy'
 
 with open(filename, 'rb') as f:
     X_train = np.load(f)
@@ -43,11 +43,13 @@ class Audio_CNN(nn.Module):
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=7, stride=1, padding=3)
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5, stride=1, padding=2)
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.conv4 = nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, stride=1, padding=1)  # New conv layer
 
         # Define BatchNorm layers
         self.bn1 = nn.BatchNorm2d(32)
         self.bn2 = nn.BatchNorm2d(64)
         self.bn3 = nn.BatchNorm2d(128)
+        self.bn4 = nn.BatchNorm2d(256)  # New batchnorm layer
 
         # Define MaxPooling layer
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
@@ -57,7 +59,7 @@ class Audio_CNN(nn.Module):
 
         # Define the fully connected layers
         self.fc1 = None  
-        self.fc2 = nn.Linear(128, num_classes)
+        self.fc2 = nn.Linear(256, num_classes)
         
     # forward pass
     def forward(self,x):
@@ -72,14 +74,16 @@ class Audio_CNN(nn.Module):
         # Pass through third conv layer, batchnorm, relu, and pool
         x = self.pool(F.relu(self.bn3(self.conv3(x))))
         
+        # Pass through fourth conv layer, batchnorm, relu, and pool
+        x = self.pool(F.relu(self.bn4(self.conv4(x))))
+        
         # Flatten the output for the fully connected layers
         x = x.view(x.size(0), -1)
 
         # Update the fully connected layer input size based on the output from CNN
         if self.fc1 is None:  
             input_size = x.size(1)  
-            self.fc1 = nn.Linear(input_size, 128)
-
+            self.fc1 = nn.Linear(input_size, 256)  
         # Pass through fully connected layers
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
@@ -164,7 +168,7 @@ def train(net, train_loader, epochs, print_every=10):
         'model_state_dict': net.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'loss': loss,
-    }, 'Audio/audio_CNN_model_checkpoint.pth')
+    }, 'C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/audio_CNN_model_checkpoint.pth')
     
     # save train and val loss plot
     plt.plot(epoch_train_loss, label='Training Loss')
@@ -173,7 +177,7 @@ def train(net, train_loader, epochs, print_every=10):
     plt.ylabel('Loss')
     plt.legend(['Train', 'Val'], loc='upper left')
     plt.title('Training and Validation Loss over Epochs')
-    plt.savefig('Audio/Audio_loss_plot.png')
+    plt.savefig('C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/Audio_loss_plot.png')
 
 # training params
 epochs = 100
