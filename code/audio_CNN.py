@@ -247,9 +247,8 @@ def eval(
     return np.mean(test_losses), test_acc
     
 def run_audio_cnn(
-    train_loader,
-    valid_loader,
-    test_loader,
+    data_path,
+    batch_size,
     save_dir,
     dropout = 0.5,
     lr = 0.0001,
@@ -259,9 +258,8 @@ def run_audio_cnn(
     """
     Purpose: Train and test the model
     Args:
-        train_loader: train data loader
-        valid_loader: validation data loader
-        test_loader: test data loader
+        data_path: path to audio data
+        batch_size: size of batch data
         save_dir: directory to save trained model weights and biases and loss plot
         dropout: dropout rate
         lr: learning rate
@@ -269,6 +267,8 @@ def run_audio_cnn(
         print_every: print loss every number of batches
     Returns: None
     """
+    
+    train_loader, valid_loader, test_loader = load_data(data_path, batch_size)
     
     # define parameters
     num_classes = 8

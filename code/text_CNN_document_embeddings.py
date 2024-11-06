@@ -233,10 +233,14 @@ def eval(
     test_acc = num_correct / len(test_loader.dataset)
     print(f"Test accuracy: {test_acc}")
     
-def run_audio_cnn(
-    train_loader,
-    valid_loader,
-    test_loader,
+def run_text_doc_embedding_cnn(
+    train_X_file,
+    train_y_file,
+    val_X_file,
+    val_y_file,
+    test_X_file,
+    test_y_file,
+    batch_size,
     save_dir,
     dropout = 0.5,
     lr = 0.0001,
@@ -246,9 +250,13 @@ def run_audio_cnn(
     """
     Purpose: Train and test the model
     Args:
-        train_loader: train data loader
-        valid_loader: validation data loader
-        test_loader: test data loader
+        train_X_file: preprocessed train data
+        train_y_file: train labels
+        val_X_file: val data
+        val_y_file: val labels
+        test_X_file: test data
+        test_y_file: test labels
+        batch_size: size of batches
         save_dir: directory to save trained model weights and biases and loss plot
         dropout: dropout rate
         lr: learning rate
@@ -256,6 +264,9 @@ def run_audio_cnn(
         print_every: print loss every number of batches
     Returns: None
     """
+    train_loader, valid_loader, test_loader = load_data(
+        train_X_file, train_y_file, val_X_file, val_y_file, test_X_file, test_y_file, batch_size
+    )
 
     # define parameters
     num_classes = 6

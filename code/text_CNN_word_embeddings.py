@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 import nltk
 from gensim.models import KeyedVectors
 from sklearn.preprocessing import LabelEncoder
@@ -92,11 +93,12 @@ def pad_features(embed_indexed_texts, seq_length):
     
     return features
     
-def load_data(filename, batch_size):
+def load_data(filename, word2vec_path, batch_size):
     """
     Purpose: load in data
     Args:
         filename: path to text data
+        word2vec_path: path to trained word embeddings
         batch_size: size of batches
     Returns: train, validation, and test split data loaders and vocab size
     """
@@ -118,7 +120,7 @@ def load_data(filename, batch_size):
     y = labelencoder.fit_transform(y)
 
     # get embedding look up table for embedding layer
-    embed_lookup = KeyedVectors.load_word2vec_format('word2vec.model', binary = False)
+    embed_lookup = KeyedVectors.load_word2vec_format(word2vec_path, binary = False)
     embed_indexed_texts = get_embed_idx(embed_lookup, data_by_words)
     vocab_size = len(embed_lookup.key_to_index)
 
@@ -139,7 +141,7 @@ def load_data(filename, batch_size):
     valid_loader = DataLoader(val_data, shuffle=True, batch_size=batch_size)
     test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
     
-    return train_loader, valid_loader, test_loader, vocab_size
+    return train_loader, valid_loader, test_loader, vocab_size, embed_lookup
 
 def train(
     save_dir,
@@ -232,7 +234,7 @@ def train(
         'model_state_dict': net.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'loss': loss,
-    }, 'code/word_embedding_model_checkpoint.pth')
+    }, os.path.join(save_dir, 'word_embedding_model_checkpoint.pth'))
     
     # save train and val loss plot
     plt.plot(epoch_train_loss, label='Training Loss')
@@ -241,7 +243,7 @@ def train(
     plt.ylabel('Loss')
     plt.legend(['Train', 'Val'], loc='upper left')
     plt.title('Training and Validation Loss over Epochs')
-    plt.savefig('code/Text_loss_word_embedding_plot.png')
+    plt.savefig(os.path.join(save_dir, 'Text_loss_word_embedding_plot.png'))
 
 def eval(
     test_loader,
@@ -293,9 +295,8 @@ def eval(
     print(f"Test accuracy: {test_acc}")
     
 def run_text_word_embedding_cnn(
-    train_loader,
-    valid_loader,
-    test_loader,
+    data_path,
+    batch_size,
     save_dir,
     dropout = 0.5,
     lr = 0.0001,
@@ -305,9 +306,8 @@ def run_text_word_embedding_cnn(
     """
     Purpose: Train and test the model
     Args:
-        train_loader: train data loader
-        valid_loader: validation data loader
-        test_loader: test data loader
+        data_path: path to text data
+        batch_size: size of batches
         save_dir: directory to save trained model weights and biases and loss plot
         dropout: dropout rate
         lr: learning rate
@@ -315,6 +315,8 @@ def run_text_word_embedding_cnn(
         print_every: print loss every number of batches
     Returns: None
     """
+    
+    train_loader, valid_loader, test_loader, vocab_size, embed_lookup = load_data(data_path, batch_size)
 
     # Hyperparameters
     num_classes = 6
