@@ -22,6 +22,7 @@ train_data = TensorDataset(torch.from_numpy(X_train), torch.from_numpy(y_train))
 val_data = TensorDataset(torch.from_numpy(X_val), torch.from_numpy(y_val))
 test_data = TensorDataset(torch.from_numpy(X_test), torch.from_numpy(y_test))
 
+# bacth size set
 batch_size = 50
 
 # shuffling and batching data
@@ -49,7 +50,7 @@ class Audio_CNN(nn.Module):
         self.bn1 = nn.BatchNorm2d(32)
         self.bn2 = nn.BatchNorm2d(64)
         self.bn3 = nn.BatchNorm2d(128)
-        self.bn4 = nn.BatchNorm2d(256)  # New batchnorm layer
+        self.bn4 = nn.BatchNorm2d(256)  
 
         # Define MaxPooling layer
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
@@ -84,6 +85,7 @@ class Audio_CNN(nn.Module):
         if self.fc1 is None:  
             input_size = x.size(1)  
             self.fc1 = nn.Linear(input_size, 256)  
+            
         # Pass through fully connected layers
         x = F.relu(self.fc1(x))
         x = self.fc2(x)

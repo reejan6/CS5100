@@ -103,10 +103,10 @@ class TextCNN(nn.Module):
         self.sig = nn.Sigmoid()
     
     def conv_and_pool(self, x, conv):
-        # squeeze last dim to get size: (batch_size, num_filters, conv_seq_length)
+        # fix sizing
         x = F.relu(conv(x)).squeeze(3)
         
-        # 1D pool over conv_seq_length
+        # pool over conv_seq_length
         x_max = F.max_pool1d(x, x.size(2)).squeeze(2)
         return x_max
     
@@ -125,7 +125,7 @@ class TextCNN(nn.Module):
         # final logit
         logit = self.fc(x) 
         
-        # sigmoid-activated --> a class score
+        # sigmoid
         return self.sig(logit)
 
 # Instantiate the model
