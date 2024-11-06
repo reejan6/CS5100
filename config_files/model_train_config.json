@@ -1,5 +1,5 @@
 {
-    "preprocessed_data_path": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/features+labels.npy",
+    "preprocessed_data_paths": ["C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/features+labels.npy"],
     "save_dir": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/test",
     "model_type": "audio",
     "batch_size": 50,
