@@ -244,8 +244,7 @@ def run_text_doc_embedding_cnn(
     save_dir,
     dropout = 0.5,
     lr = 0.0001,
-    epochs = 100,
-    print_every=10
+    epochs = 100
 ):
     """
     Purpose: Train and test the model
@@ -261,7 +260,6 @@ def run_text_doc_embedding_cnn(
         dropout: dropout rate
         lr: learning rate
         epochs: train epochs
-        print_every: print loss every number of batches
     Returns: None
     """
     train_loader, valid_loader, test_loader = load_data(
@@ -287,7 +285,7 @@ def run_text_doc_embedding_cnn(
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     trained_net = train(save_dir, net, train_loader, valid_loader, device,
-                        optimizer, criterion, epochs, print_every)
+                        optimizer, criterion, epochs, print_every = 10)
     
     print(eval(test_loader, trained_net, device, criterion))
     

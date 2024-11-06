@@ -296,27 +296,27 @@ def eval(
     
 def run_text_word_embedding_cnn(
     data_path,
+    model_path,
     batch_size,
     save_dir,
     dropout = 0.5,
     lr = 0.0001,
-    epochs = 100,
-    print_every=10
+    epochs = 100
 ):
     """
     Purpose: Train and test the model
     Args:
         data_path: path to text data
+        model_path: path to word2vec model
         batch_size: size of batches
         save_dir: directory to save trained model weights and biases and loss plot
         dropout: dropout rate
         lr: learning rate
         epochs: train epochs
-        print_every: print loss every number of batches
     Returns: None
     """
     
-    train_loader, valid_loader, test_loader, vocab_size, embed_lookup = load_data(data_path, batch_size)
+    train_loader, valid_loader, test_loader, vocab_size, embed_lookup = load_data(data_path, model_path, batch_size)
 
     # Hyperparameters
     num_classes = 6
@@ -341,6 +341,6 @@ def run_text_word_embedding_cnn(
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     trained_net = train(save_dir, net, train_loader, valid_loader, device,
-                        optimizer, criterion, epochs, print_every)
+                        optimizer, criterion, epochs, print_every = 10)
     
     print(eval(test_loader, trained_net, device, criterion))
