@@ -209,7 +209,7 @@ def eval(
         net: trained model to evaluate
         device: device to run eval on
         criterion: loss function
-    Returns: test loss and accuracy
+    Returns: None
     """
     
     # Get test data loss and accuracy
@@ -243,8 +243,6 @@ def eval(
     # accuracy over all test data
     test_acc = num_correct / len(test_loader.dataset)
     print(f"Test accuracy: {test_acc}")
-    
-    return np.mean(test_losses), test_acc
     
 def run_audio_cnn(
     data_path,

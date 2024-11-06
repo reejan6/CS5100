@@ -185,6 +185,8 @@ def train(
     plt.title('Training and Validation Loss over Epochs')
     plt.savefig(os.path.join('Text_loss_document_embedding_plot.png'))
     
+    return net
+    
 def eval(
     test_loader,
     net,
@@ -198,7 +200,7 @@ def eval(
         net: trained model to evaluate
         device: device to run eval on
         criterion: loss function
-    Returns: test loss and accuracy
+    Returns: None
     """
     
     # Get test data loss and accuracy
