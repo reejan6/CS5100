@@ -183,7 +183,7 @@ def train(
     plt.ylabel('Loss')
     plt.legend(['Train', 'Val'], loc='upper left')
     plt.title('Training and Validation Loss over Epochs')
-    plt.savefig(os.path.join('Text_loss_document_embedding_plot.png'))
+    plt.savefig(os.path.join(save_dir, 'Text_loss_document_embedding_plot.png'))
     
     return net
     
