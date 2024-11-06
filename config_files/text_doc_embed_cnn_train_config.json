@@ -8,7 +8,7 @@
         "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/Text/test_y.pkl"
     ],
     "save_dir": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/test",
-    "model_type": "text_word",
+    "model_type": "text_doc",
     "batch_size": 50,
     "learning_rate": 0.0001,
     "epochs": 2,
