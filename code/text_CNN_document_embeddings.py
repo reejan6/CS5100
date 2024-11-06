@@ -33,7 +33,7 @@ train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
 valid_loader = DataLoader(val_data, shuffle=True, batch_size=batch_size)
 test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 
-# Hyperparameters
+# hyperparameters
 num_classes = 6
 num_filters = 100
 dropout = 0.5
@@ -53,7 +53,7 @@ class TextCNN(nn.Module):
     
     def forward(self, x):
         
-        # shape is (batch_size, embedding_dim, sequence_length)
+        # fix shape
         x = x.unsqueeze(2)
         
         # apply convolution and ReLU, followed by max pooling
@@ -196,7 +196,6 @@ for inputs, labels in test_loader:
     correct_tensor = pred.eq(labels)
     correct = np.squeeze(correct_tensor.numpy()) if device == 'cpu' else np.squeeze(correct_tensor.cpu().numpy())
     num_correct += np.sum(correct)
-
 
 # avg test loss
 print(f"Test loss: {np.mean(test_losses)}")
