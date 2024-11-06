@@ -1,0 +1,16 @@
+{
+    "preprocessed_data_paths": [
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_train.npy",
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/train_y.pkl",
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_val.npy",
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/Text/val_y.pkl",
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_test.npy",
+        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/Text/test_y.pkl"
+    ],
+    "save_dir": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/test",
+    "model_type": "text_word",
+    "batch_size": 50,
+    "learning_rate": 0.0001,
+    "epochs": 2,
+    "word2vec_path": null
+}
