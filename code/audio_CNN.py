@@ -65,7 +65,7 @@ class Audio_CNN(nn.Module):
     
 def load_data(filename, batch_size):
     """
-    Purpose: load in preprocesse data
+    Purpose: load in preprocessed data
     Args:
         filename: path to preprocessed MFCC audio data
         batch_size: size of batches

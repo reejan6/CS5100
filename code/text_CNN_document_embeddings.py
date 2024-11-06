@@ -43,9 +43,14 @@ class TextCNN(nn.Module):
 
 def load_data(train_X_file, train_y_file, val_X_file, val_y_file, test_X_file, test_y_file, batch_size):
     """
-    Purpose: load in preprocesse data
+    Purpose: load in preprocessed data
     Args:
-        filename: path to preprocessed MFCC audio data
+        train_X_file: preprocessed train data
+        train_y_file: train labels
+        val_X_file: val data
+        val_y_file: val labels
+        test_X_file: test data
+        test_y_file: test labels
         batch_size: size of batches
     Returns: train, validation, and test split data loaders
     """
