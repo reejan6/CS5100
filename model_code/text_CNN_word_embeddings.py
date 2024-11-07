@@ -345,4 +345,4 @@ def run_text_word_embedding_cnn(
     trained_net = train(save_dir, net, train_loader, valid_loader, device,
                         optimizer, criterion, epochs, print_every = 10)
     
-    print(eval(test_loader, trained_net, device, criterion))
+    eval(test_loader, trained_net, device, criterion)
