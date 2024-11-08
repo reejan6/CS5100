@@ -20,6 +20,8 @@ This project performs a comparative analysis of modeling on text vs audio data t
     - Trains and evaluates a CNN to analyze the sentiment of the input text represented as a document embedding
     - Supports 6 sentiment categories: anger, fear, joy, love, sadness, and surprise
     - Returns the test loss and acuuracy to the user
+    - Saves trained model weights and biases
+    - Saves a train and validation loss plot
 
 ##### Word Embedding Layer CNN
 
@@ -31,6 +33,8 @@ This project performs a comparative analysis of modeling on text vs audio data t
     - Trains and evaluates a CNN to analyze the sentiment of the input text represented as a mapping to word embeddings (to be recognized by the embedding layer in the CNN)
     - Supports 6 sentiment categories: anger, fear, joy, love, sadness, and surprise
     - Returns the test loss and acuuracy to the user
+    - Saves trained model weights and biases
+    - Saves a train and validation loss plot
 
 #### Audio Classification
 
@@ -48,6 +52,8 @@ This project performs a comparative analysis of modeling on text vs audio data t
     - Trains and evaluates a CNN to analyze the sentiment of the input audio represented as Mel-Frequency Cepstral Coefficients (MFCC)
     - Supports 8 sentiment categories: calm, happy, sad, angry, fearful, surprise, and disgust
     - Returns the test loss and acuuracy to the user
+    - Saves trained model weights and biases
+    - Saves a train and validation loss plot
 
 ### Data Sources
 
@@ -77,11 +83,20 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
 
 ### Repo Overview/Structure
 
-- 
+- `/config_files`
+    - 
+- `/data`
+- `/model_checkpoint`
+- `/model_code`
+- `/plots`
+- `/preprocessing_notebooks`
+- `/visualization_code`
+- `project_flow_chart.pdf`
+- `results.txt`
 
 ### Getting Started
 
-
+#### Config Files
 
 python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/audio_cnn_train_config.json"
 
