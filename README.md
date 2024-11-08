@@ -133,15 +133,31 @@ Ensure you have the following installed to run our models and preprocessing step
 
 #### Config Files
 
-
+Params:
+- preprocessed_data_paths: List of paths to preprocessed data needed to run the model. (Expected structure per model in example configs)
+- save_dir: path to directory to save model results (trained model weights and biases as well as loss plot)
+- model_type: model to run (audio, text_doc, text_word)
+- batch_size
+- learning rate
+- epochs: train epochs
+- dropout: dropout rate
+- word2vec_path: path to trained word2vec model for text word embedding layer cnn (null for audio cnn and document embedding cnn)
 
 #### Running model training and evaluation
 
-python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/audio_cnn_train_config.json"
+1. clone the repo `git clone https://github.com/reejan6/CS5100.git`
+2. Download all necessary data
+3. Update the config files in `/config_files` to point to the correct data paths
+4. navigate to the `/model_code` folder. `cd model_code`
+5. Run the following command: `python run_models.py --config <path to config file>"
 
-python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/text_doc_embed_cnn_train_config.json"
+Examples:
 
-python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/text_word_embed_cnn_train_config.json"
+`python run_models.py --config "CS5100/config_files/audio_cnn_train_config.json"`
+
+`python run_models.py --config "CS5100/config_files/text_doc_embed_cnn_train_config.json"`
+
+`python run_models.py --config "CS5100/config_files/text_word_embed_cnn_train_config.json"`
 
 ### Acknowledgements
 
