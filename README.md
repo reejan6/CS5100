@@ -98,12 +98,18 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
     - `rnn_models.py`: code to run models from config file
     - `text_CNN_document_embeddings.py`: text document embedding cnn code
     - `text_CNN_word_embeddings.py`: text word embedding layer cnn code
-- `/plots`
-    - 
-- `/preprocessing_notebooks`
-- `/visualization_code`
-- `project_flow_chart.pdf`
-- `results.txt`
+- `/plots`: loss plots from model training
+    - `Audio_loss_plot.png`
+    - `Text_loss_document_embeding_plot.png`
+    - `Text_loss_word_embedding_plot.png`
+- `/preprocessing_notebooks`: notebooks for preprocessing data used to train these models
+    - `audio_data_preprocess.ipynb`
+    - `text_data_preprocess.ipynb`
+- `/visualization_code`: data exploration visualization code
+    - `audio_visualization.py`
+    - `text_visualization.py`
+- `project_flow_chart.pdf`: project flow chart pdf, data and model pipeline
+- `results.txt`: model training results with different hyperparameters
 
 ### Getting Started
 
