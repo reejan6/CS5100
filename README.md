@@ -149,7 +149,7 @@ Params:
 2. Download all necessary data
 3. Update the config files in `/config_files` to point to the correct data paths
 4. navigate to the `/model_code` folder. `cd model_code`
-5. Run the following command: `python run_models.py --config <path to config file>"
+5. Run the following command: `python run_models.py --config <path to config file>`
 
 Examples:
 
