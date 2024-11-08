@@ -83,12 +83,23 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
 
 ### Repo Overview/Structure
 
-- `/config_files`
-    - 
-- `/data`
-- `/model_checkpoint`
-- `/model_code`
+- `/config_files`: stores config files to run model training from the command line
+    - `audio_cnn_train_config.json`: example config file to run the audio cnn train and eval
+    - `text_doc_embed_cnn_train_config.json`: example config file to run the text document embedding cnn train and eval
+    - `text_word_embed_cnn_train_config.json`: example config file to run the word embedding layer cnn train and eval
+- `/data`: data used in model training (small enough size to store in repo)
+    - `merged_training.pkl`: raw text data used in word embedding layer cnn
+- `/model_checkpoint`: trained model weights and biases, can be used to load models and infer
+    - `audio_CNN_model_checkpoint.pth`: audio cnn model
+    - `document_embedding_model_checkpoint.pth`: text document embedding cnn model
+    - `word_embedding_model_checkpoint.pth`: word embedding layer cnn model
+- `/model_code`: CNN and train and eval code
+    - `audio_CNN.py`: audio cnn code
+    - `rnn_models.py`: code to run models from config file
+    - `text_CNN_document_embeddings.py`: text document embedding cnn code
+    - `text_CNN_word_embeddings.py`: text word embedding layer cnn code
 - `/plots`
+    - 
 - `/preprocessing_notebooks`
 - `/visualization_code`
 - `project_flow_chart.pdf`
