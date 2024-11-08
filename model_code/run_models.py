@@ -1,5 +1,4 @@
 import argparse
-import configparser
 import json
 import os
 from audio_CNN import run_audio_cnn

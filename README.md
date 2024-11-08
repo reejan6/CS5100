@@ -113,10 +113,36 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
 
 ### Getting Started
 
+#### Prerequisites
+
+Ensure you have all necessary data files downloaded as listed in the Data Sources section of the ReadMe
+
+Ensure you have the following installed to run our models and preprocessing steps
+- python
+- torch
+- numpy
+- matplotlib
+- pickle
+- nltk
+- gensim
+- pandas
+- sklearn
+- librosa
+- seaborn
+- collections
+
 #### Config Files
+
+
+
+#### Running model training and evaluation
 
 python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/audio_cnn_train_config.json"
 
 python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/text_doc_embed_cnn_train_config.json"
 
 python run_models.py --config "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/config_files/text_word_embed_cnn_train_config.json"
+
+### Acknowledgements
+
+### Resources
