@@ -16,6 +16,7 @@ This project performs a comparative analysis of modeling on text vs audio data t
     - In `preprocessing_notebooks\text_data_preprocess.ipynb`, converts raw text data into a document embedding representations
 
 - Emotion Classification/Sentiment Analysis
+    - `model_code\text_CNN_document_embeddings.py`
     - Trains and evaluates a CNN to analyze the sentiment of the input text represented as a document embedding
     - Supports 6 sentiment categories: anger, fear, joy, love, sadness, and surprise
     - Returns the test loss and acuuracy to the user
@@ -23,9 +24,10 @@ This project performs a comparative analysis of modeling on text vs audio data t
 ##### Word Embedding Layer CNN
 
 - Data Preprocessing
-    - Trains a word2vec model to support the CNN embedding layer for the word embedding layer CNN
+    - In `preprocessing_notebooks\text_data_preprocess.ipynb`, trains a word2vec model to support the CNN embedding layer for the word embedding layer CNN
 
 - Emotion Classification/Sentiment Analysis
+    - `model_code\text_CNN_word_embeddings.py`
     - Trains and evaluates a CNN to analyze the sentiment of the input text represented as a mapping to word embeddings (to be recognized by the embedding layer in the CNN)
     - Supports 6 sentiment categories: anger, fear, joy, love, sadness, and surprise
     - Returns the test loss and acuuracy to the user
@@ -42,9 +44,36 @@ This project performs a comparative analysis of modeling on text vs audio data t
     - In `visualization_code\audio_visualization.py`, generates helpful data exploratory visualizations
 
 - Emotion Classification/Sentiment Analysis
+    - `model_code\audio_CNN.py`
     - Trains and evaluates a CNN to analyze the sentiment of the input audio represented as Mel-Frequency Cepstral Coefficients (MFCC)
     - Supports 8 sentiment categories: calm, happy, sad, angry, fearful, surprise, and disgust
     - Returns the test loss and acuuracy to the user
+
+### Data Sources
+
+Note: Data too large to store in the repo is stored in this shared Google Drive Folder https://drive.google.com/drive/u/2/folders/1telwNIOOOykOXPYuTyqMKyC1Mwp5VwB9
+
+- Document Embedding CNN
+    - Raw Data
+        - `data\merged_training.pkl`
+    - Preprocessed data, ready for model training
+        - `text_embeddings_train.npy` in drive folder
+        - `text_embeddings_val.npy` in drive folder
+        - `text_embeddings_test.npy` in drive folder
+        - `train_y.pkl` in drive folder
+        - `val_y.pkl` in drive folder
+        - `test_y.pkl` in drive folder
+- Word Embedding Layer CNN
+    - Raw Data, ready for model training
+        - `data\merged_training.pkl`
+    - Trained word2vec model for embedding layer
+        - `word2vec.model` in drive folder
+- Audio CNN
+    - Raw Data
+        - Downloaded from: https://zenodo.org/records/1188976 
+            - Audio Speech Actors Files
+    - Preprocessed data, ready for model training
+        - `features+labels.npy` in drive folder
 
 ### Repo Overview/Structure
 
