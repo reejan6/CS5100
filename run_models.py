@@ -98,6 +98,7 @@ def main():
             input_text = config["input_text"]
             word2vec_path = config["word2vec_path"]
             dropout = config["dropout"]
+            model_type = config["model_type"]
         except KeyError as e:
             print(f"Missing key in configuration: {e}")
             return
