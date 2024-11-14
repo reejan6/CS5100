@@ -346,3 +346,70 @@ def run_text_word_embedding_cnn(
                         optimizer, criterion, epochs, print_every = 10)
     
     eval(test_loader, trained_net, device, criterion)
+    
+def tokenize_input(word2vec_path, input_text):
+    """
+    Purpose: prep text input for inference
+    Args:
+        word2vec_path: path to word2vec model with embedddings
+        input_text: text to classify
+
+    Returns: prepped text to have inference run on and embedding indices for the input
+    """
+    embed_lookup = KeyedVectors.load_word2vec_format(word2vec_path, binary = False)
+    input_text = input_text.lower() 
+    input_words = input_text.split()
+
+    tokenized_input = []
+    for word in input_words:
+        try:
+            idx = embed_lookup.key_to_index[word]
+        except: 
+            idx = 0
+        tokenized_input.append(idx)
+
+    return tokenized_input, embed_lookup
+
+def run_text_word_embedding_infer(
+    net_path, input_text, word2vec_path, dropout
+):
+    """
+    Purpose: classify given text input
+    Args:
+        net_path: path to trained model pth file
+        input_text: text to classify
+        word2vec_path: path to trained word embeddings
+    Returns: classification of input text
+    """
+    mappings, embed_lookup = tokenize_input(word2vec_path, input_text)
+    
+    net = TextCNN(
+        embed_model=embed_lookup,
+        embedding_dim=100,
+        vocab_size=len(embed_lookup.key_to_index),
+        num_filters=100,
+        num_classes=6,
+        dropout=dropout,
+        kernel_sizes=[3,4,5]
+    )
+    checkpoint = torch.load(net_path)
+    net.load_state_dict(checkpoint['model_state_dict'])
+    net.eval()
+    
+    seq_length=200
+    features = pad_features([mappings], seq_length)
+    feature_tensor = torch.from_numpy(features)
+    output = net(feature_tensor)
+    pred = torch.argmax(output, dim=1) 
+    
+    mapping_dict = {
+        0: 'anger',
+        1: 'fear',
+        2: 'joy',
+        3: 'love',
+        4: 'sadness',
+        5: 'surprise'
+    }
+    
+    print("Sentiment Detected: " + mapping_dict[pred.item()])
+    
