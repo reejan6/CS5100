@@ -35,55 +35,86 @@ def main():
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON config file: {e}")
         return
-
+    
     try:
-        preprocessed_data_paths = config["preprocessed_data_paths"]
-        save_dir = config["save_dir"]
-        model_type = config["model_type"]
-        batch_size = config["batch_size"]
-        learning_rate = config["learning_rate"]
-        epochs = config["epochs"]
-        dropout = config["dropout"]
-        word2vec_path = config["word2vec_path"]
+        run_mode = config["run_mode"]
     except KeyError as e:
         print(f"Missing key in configuration: {e}")
         return
     
-    if model_type == 'audio':
-        run_audio_cnn(
-            preprocessed_data_paths[0],
-            batch_size,
-            save_dir,
-            dropout,
-            learning_rate,
-            epochs
-        )
+    if run_mode == "train":
+        try:
+            preprocessed_data_paths = config["preprocessed_data_paths"]
+            save_dir = config["save_dir"]
+            model_type = config["model_type"]
+            batch_size = config["batch_size"]
+            learning_rate = config["learning_rate"]
+            epochs = config["epochs"]
+            dropout = config["dropout"]
+            word2vec_path = config["word2vec_path"]
+        except KeyError as e:
+            print(f"Missing key in configuration: {e}")
+            return
         
-    elif model_type == 'text_doc':
-        run_text_doc_embedding_cnn(
-            preprocessed_data_paths[0],
-            preprocessed_data_paths[1],
-            preprocessed_data_paths[2],
-            preprocessed_data_paths[3],
-            preprocessed_data_paths[4],
-            preprocessed_data_paths[5],
-            batch_size,
-            save_dir,
-            dropout,
-            learning_rate,
-            epochs
-        )
+        if model_type == 'audio':
+            run_audio_cnn(
+                preprocessed_data_paths[0],
+                batch_size,
+                save_dir,
+                dropout,
+                learning_rate,
+                epochs
+            )
+            
+        elif model_type == 'text_doc':
+            run_text_doc_embedding_cnn(
+                preprocessed_data_paths[0],
+                preprocessed_data_paths[1],
+                preprocessed_data_paths[2],
+                preprocessed_data_paths[3],
+                preprocessed_data_paths[4],
+                preprocessed_data_paths[5],
+                batch_size,
+                save_dir,
+                dropout,
+                learning_rate,
+                epochs
+            )
+            
+        elif model_type == 'text_word':
+            run_text_word_embedding_cnn(
+                preprocessed_data_paths[0],
+                word2vec_path,
+                batch_size,
+                save_dir,
+                dropout,
+                learning_rate,
+                epochs
+            )
+
+    else:
+        try:
+            net_path = config["net_path"]
+            input_text = config["input_text"]
+            word2vec_path = config["word2vec_path"]
+            dropout = config["dropout"]
+        except KeyError as e:
+            print(f"Missing key in configuration: {e}")
+            return
         
-    elif model_type == 'text_word':
-        run_text_word_embedding_cnn(
-            preprocessed_data_paths[0],
-            word2vec_path,
-            batch_size,
-            save_dir,
-            dropout,
-            learning_rate,
-            epochs
-        )
+        if model_type == 'text_word':
+            run_text_word_embedding_infer(
+                net_path,
+                input_text,
+                word2vec_path,
+                dropout
+            )
+        
+        elif model_type == "text_doc":
+            pass
+        
+        else:
+            print("Inference not implemented for other models.")   
 
 if __name__ == '__main__':
     main()
