@@ -1,4 +1,5 @@
 {
+    "run_mode": "infer",
     "net_path": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/model_checkpoint/word_embedding_model_checkpoint.pth",
     "input_text": "I'm so excited to go on vacation",
     "word2vec_path": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/word2vec.model",
