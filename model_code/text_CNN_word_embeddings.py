@@ -103,6 +103,8 @@ def load_data(filename, word2vec_path, batch_size):
     Returns: train, validation, and test split data loaders and vocab size
     """
 
+    nltk.download('punkt_tab')
+
     # import data
     text_df = pd.read_pickle(filename)
 
