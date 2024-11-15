@@ -1,5 +1,7 @@
 import numpy as np
 import os
+import nltk
+from gensim.models import Word2Vec
 import pickle
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -290,4 +292,67 @@ def run_text_doc_embedding_cnn(
                         optimizer, criterion, epochs, print_every = 10)
     
     eval(test_loader, trained_net, device, criterion)
+    
+def prep_infer_text(
+    input_text,
+    word2vec_path
+):
+    """
+    Purpose: prep input text for doc embedding model
+    Args:
+        input_text: text to classify
+        word2vec_path: word2vec model 
+
+    Returns: document embedding representation of input text
+    """
+    tokenized_input = nltk.word_tokenize(input_text)
+    model = Word2Vec.load(word2vec_path)
+    
+    text_embeds = []
+    for j in tokenized_input:
+        if j in model.wv.key_to_index:
+            text_embeds.append(model.wv[j])
+    if len(text_embeds) != 0:
+        text_embeds = np.mean(text_embeds, axis = 0)
+    else:
+        print("empty input")
+        
+    return np.array(text_embeds)
+
+def run_text_word_embedding_infer(
+    net_path, input_text, word2vec_path, dropout
+):
+    """
+    Purpose: classify given text input
+    Args:
+        net_path: path to trained model pth file
+        input_text: text to classify
+        word2vec_path: path to trained word embeddings
+    Returns: classification of input text
+    """
+    embeds_input = prep_infer_text(input_text, word2vec_path)
+    
+    net = TextCNN(
+        num_filters = 100,
+        num_classes = 6,
+        dropout = dropout
+    )
+    checkpoint = torch.load(net_path)
+    net.load_state_dict(checkpoint['model_state_dict'])
+    net.eval()
+
+    feature_tensor = torch.from_numpy(embeds_input)
+    output = net(feature_tensor)
+    pred = torch.argmax(output, dim=1) 
+    
+    mapping_dict = {
+        0: 'anger',
+        1: 'fear',
+        2: 'joy',
+        3: 'love',
+        4: 'sadness',
+        5: 'surprise'
+    }
+    
+    print("Sentiment Detected: " + mapping_dict[pred.item()])
     
