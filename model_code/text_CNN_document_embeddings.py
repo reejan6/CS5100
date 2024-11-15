@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import nltk
-from gensim.models import Word2Vec
+from gensim.models import KeyedVectors
 import pickle
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -306,18 +306,18 @@ def prep_infer_text(
     Returns: document embedding representation of input text
     """
     tokenized_input = nltk.word_tokenize(input_text)
-    model = Word2Vec.load(word2vec_path)
+    model = KeyedVectors.load_word2vec_format(word2vec_path, binary = False)
     
     text_embeds = []
     for j in tokenized_input:
-        if j in model.wv.key_to_index:
-            text_embeds.append(model.wv[j])
+        if j in model.key_to_index:
+            text_embeds.append(model[j])
     if len(text_embeds) != 0:
         text_embeds = np.mean(text_embeds, axis = 0)
     else:
         print("empty input")
         
-    return np.array(text_embeds)
+    return np.array([text_embeds])
 
 def run_text_doc_embedding_infer(
     net_path, input_text, word2vec_path, dropout
