@@ -5,6 +5,7 @@ from model_code.audio_CNN import run_audio_cnn
 from model_code.text_CNN_document_embeddings import run_text_doc_embedding_cnn
 from model_code.text_CNN_word_embeddings import run_text_word_embedding_cnn
 from model_code.text_CNN_word_embeddings import run_text_word_embedding_infer
+from model_code.text_CNN_document_embeddings import run_text_doc_embedding_infer
 
 def load_config(config_path):
     """Load JSON configuration file."""
@@ -112,7 +113,12 @@ def main():
             )
         
         elif model_type == "text_doc":
-            pass
+            run_text_doc_embedding_infer(
+                net_path,
+                input_text,
+                word2vec_path,
+                dropout
+            )
         
         else:
             print("Inference not implemented for other models.")   

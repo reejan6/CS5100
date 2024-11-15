@@ -319,7 +319,7 @@ def prep_infer_text(
         
     return np.array(text_embeds)
 
-def run_text_word_embedding_infer(
+def run_text_doc_embedding_infer(
     net_path, input_text, word2vec_path, dropout
 ):
     """
