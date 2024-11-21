@@ -13,7 +13,7 @@ def feature_mfcc(
     mels=128
     ):
 
-    # Compute the MFCCs for all STFT frames 
+    # Compute the MFCCs 
     mfc_coefficients=librosa.feature.mfcc(
         y=waveform, 
         sr=sample_rate, 
@@ -39,7 +39,7 @@ def get_features(waveforms, features, sample_rate):
 
 def get_waveforms(file, default):
     
-    # load an individual sample audio file
+    # load an individual sample audio file, if we want default settings or not
     if default:
         waveform, _ = librosa.load(file)
     else:
@@ -57,8 +57,7 @@ def awgn_augmentation(waveform, multiples=2, bits=16, snr_min=15, snr_max=30):
     # get length of waveform 
     wave_len = len(waveform)
     
-    # Generate normally distributed (Gaussian) noises
-    # one for each waveform and multiple (i.e. wave_len*multiples noises)
+    # Generate normally distributed noises
     noise = np.random.normal(size=(multiples, wave_len))
     
     # Normalize waveform and noise
@@ -107,7 +106,10 @@ def augment_waveforms(waveforms, features, emotions, multiples):
     
     return features, emotions
 
-def run_featurize_from_wav(wav_path, duration, offset, sr=sample_rate):
-    waveform = get_waveforms(wav_path, duration, offset, sr)
-    print(waveform)
-    # augmented_waveform = augment_waveforms(waveforms)
+def run_featurize_from_wav(wav_path, default, save_path):
+    waveform = get_waveforms(wav_path, default)
+    featurized = np.array([feature_mfcc(waveform, 22050)])
+    final = np.expand_dims(featurized,1)
+    
+    with open(save_path, 'wb') as f:
+        np.save(f, final)
