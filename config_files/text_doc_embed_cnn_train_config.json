@@ -1,13 +1,13 @@
 {
     "preprocessed_data_paths": [
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_train.npy",
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/train_y.pkl",
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_val.npy",
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/val_y.pkl",
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_test.npy",
-        "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/test_y.pkl"
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/text_embeddings_train.npy",
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/train_y.pkl",
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/text_embeddings_val.npy",
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/val_y.pkl",
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/text_embeddings_test.npy",
+        "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/test_y.pkl"
     ],
-    "save_dir": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/test",
+    "save_dir": "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/save",
     "model_type": "text_doc",
     "batch_size": 50,
     "learning_rate": 0.0001,

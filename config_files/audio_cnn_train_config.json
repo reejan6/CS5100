@@ -1,6 +1,6 @@
 {
-    "preprocessed_data_paths": ["C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/features+labels.npy"],
-    "save_dir": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Audio/test",
+    "preprocessed_data_paths": ["/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/features+labels.npy"],
+    "save_dir": "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/save",
     "model_type": "audio",
     "batch_size": 50,
     "learning_rate": 0.0001,
