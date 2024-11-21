@@ -5,7 +5,6 @@ import re
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import nltk
-import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from nltk.tokenize import word_tokenize
@@ -14,11 +13,11 @@ import seaborn as sns
 from collections import Counter
 from textblob import TextBlob
 import numpy as np
-
+nltk.download('stopwords')
 
 # #### Loading the Data
 
-path = '/Users/jennishachristinamartin/Downloads/merged_training.pkl'
+path = '/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/merged_training.pkl'
 # loading the data
 d = pd.read_pickle(path)
 print(d.head())
