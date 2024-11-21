@@ -1,0 +1,8 @@
+{
+    "run_mode": "infer",
+    "model_type": "audio",
+    "net_path": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/project_code/CS5100/model_checkpoint/audio_CNN_model_checkpoint.pth",
+    "input": "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Shorter_inference_file.wav",
+    "dropout": 0.5,
+    "word2vec_path": null
+}

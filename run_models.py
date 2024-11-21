@@ -1,11 +1,9 @@
 import argparse
 import json
 import os
-from model_code.audio_CNN import run_audio_cnn
-from model_code.text_CNN_document_embeddings import run_text_doc_embedding_cnn
-from model_code.text_CNN_word_embeddings import run_text_word_embedding_cnn
-from model_code.text_CNN_word_embeddings import run_text_word_embedding_infer
-from model_code.text_CNN_document_embeddings import run_text_doc_embedding_infer
+from model_code.audio_CNN import run_audio_cnn, run_audio_infer
+from model_code.text_CNN_document_embeddings import run_text_doc_embedding_cnn, run_text_doc_embedding_infer
+from model_code.text_CNN_word_embeddings import run_text_word_embedding_cnn, run_text_word_embedding_infer
 
 def load_config(config_path):
     """Load JSON configuration file."""
@@ -96,7 +94,7 @@ def main():
     else:
         try:
             net_path = config["net_path"]
-            input_text = config["input_text"]
+            input = config["input"]
             word2vec_path = config["word2vec_path"]
             dropout = config["dropout"]
             model_type = config["model_type"]
@@ -107,7 +105,7 @@ def main():
         if model_type == 'text_word':
             run_text_word_embedding_infer(
                 net_path,
-                input_text,
+                input,
                 word2vec_path,
                 dropout
             )
@@ -115,13 +113,17 @@ def main():
         elif model_type == "text_doc":
             run_text_doc_embedding_infer(
                 net_path,
-                input_text,
+                input,
                 word2vec_path,
                 dropout
             )
         
         else:
-            print("Inference not implemented for other models.")   
+            run_audio_infer(
+                net_path,
+                input,
+                dropout
+            )
 
 if __name__ == '__main__':
     main()

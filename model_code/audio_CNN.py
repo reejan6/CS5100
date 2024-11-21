@@ -284,3 +284,43 @@ def run_audio_cnn(
     
     eval(test_loader, trained_net, device, criterion)
     
+def run_audio_infer(
+    net_path, input_path, dropout
+):
+    """
+    Purpose: classify given audio MFCC input
+    Args:
+        net_path: path to trained model pth file
+        input_path: audio mfcc file to classify
+        dropout: dropout
+    Returns: classification of input audio representation
+    """
+    
+    net = Audio_CNN(
+        num_classes = 8,
+        dropout = dropout
+    )
+    checkpoint = torch.load(net_path)
+    net.load_state_dict(checkpoint['model_state_dict'])
+    net.eval()
+    
+    with open(input_path, 'rb') as f:
+        input = np.load(f)
+
+    feature_tensor = torch.from_numpy(input)
+    output = net(feature_tensor)
+    pred = torch.argmax(output, dim=1) 
+    
+    mapping_dict = {
+        0: 'surprised',
+        1: 'neutral',
+        2: 'calm',
+        3: 'happy',
+        4: 'sad',
+        5: 'angry',
+        6: 'fearful',
+        7: 'disgust'
+    }
+    
+    print("Sentiment Detected: " + mapping_dict[pred.item()])
+    
