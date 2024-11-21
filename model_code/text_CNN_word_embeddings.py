@@ -26,7 +26,6 @@ class TextCNN(nn.Module):
         )
         self.fc = nn.Linear(len(kernel_sizes) * num_filters, num_classes)
         self.dropout = nn.Dropout(dropout)
-        self.sig = nn.Sigmoid()
     
     def conv_and_pool(self, x, conv):
         # fix sizing
@@ -49,10 +48,8 @@ class TextCNN(nn.Module):
         x = self.dropout(x)
         
         # final logit
-        logit = self.fc(x) 
-        
-        # sigmoid
-        return self.sig(logit)
+        output = self.fc(x) 
+        return output
     
 def get_embed_idx(embed_lookup, data_by_words):
     """
