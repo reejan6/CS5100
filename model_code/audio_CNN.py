@@ -301,7 +301,12 @@ def run_audio_infer(
         dropout = dropout
     )
     checkpoint = torch.load(net_path)
-    net.load_state_dict(checkpoint['model_state_dict'])
+    model_state = net.state_dict()
+    filtered_state_dict = {
+        k: v for k, v in checkpoint['model_state_dict'].items()
+        if k in model_state and model_state[k].size() == v.size()
+    }
+    net.load_state_dict(filtered_state_dict, strict=False)
     net.eval()
     
     with open(input_path, 'rb') as f:
