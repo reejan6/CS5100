@@ -116,7 +116,7 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
     - `text_visualization.py`
 - `.gitignore`
 - `project_flow_chart.pdf`: project flow chart pdf, data and model pipeline
-- `results.csv`: model training results with different hyperparameters
+- `Results.csv`: model training results with different hyperparameters
 - `rnn_models.py`: code to run models from config file
 
 ### Getting Started
