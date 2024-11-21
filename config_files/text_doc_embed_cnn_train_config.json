@@ -1,4 +1,5 @@
 {
+    "run_mode": "train",
     "preprocessed_data_paths": [
         "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/text_embeddings_train.npy",
         "C:/Users/jenni/virtualEnv/CS 5100/Final Project/Text/train_y.pkl",
