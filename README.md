@@ -182,6 +182,10 @@ Examples:
 
 `python run_models.py --config "CS5100/config_files/text_word_embed_cnn_infer_config.json"`
 
-### Acknowledgements
+### Resources/ References
 
-### Resources
+RAVDESS Dataset: https://zenodo.org/records/1188976
+
+CARER Dataset: https://paperswithcode.com/dataset/emotion
+
+RAVDESS Preprocessing Steps: https://nbviewer.org/github/IliaZenkov/transformer_cnn_parallel_audio_classification/blob/main/notebooks/Parallel_is_All_You_Want.ipynb#Load-Data-and-Extract-Features
