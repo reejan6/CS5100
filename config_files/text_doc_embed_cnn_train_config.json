@@ -1,4 +1,5 @@
 {
+    "run_mode": "train",
     "preprocessed_data_paths": [
         "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/text_embeddings_train.npy",
         "/Users/reejanshrestha/Desktop/CS5100-AI/final_project/CS5100/data/train_y.pkl",

@@ -8,12 +8,12 @@ This project performs a comparative analysis of modeling on text vs audio data t
 #### Text Classification
 
 - Data Visualization
-    - In `visualization_code\text_visualization.py`, generates helpful data exploratory visualizations
+    - `visualization_code\text_visualization.py`: generates data exploration visualizations
 
 ##### Document Embedding CNN
 
 - Data Preprocessing
-    - In `preprocessing_notebooks\text_data_preprocess.ipynb`, converts raw text data into a document embedding representations
+    - `preprocessing_notebooks\text_data_preprocess.ipynb`: converts raw text data into a document embedding representations
 
 - Emotion Classification/Sentiment Analysis
     - `model_code\text_CNN_document_embeddings.py`
@@ -26,7 +26,7 @@ This project performs a comparative analysis of modeling on text vs audio data t
 ##### Word Embedding Layer CNN
 
 - Data Preprocessing
-    - In `preprocessing_notebooks\text_data_preprocess.ipynb`, trains a word2vec model to support the CNN embedding layer for the word embedding layer CNN
+    - `preprocessing_notebooks\text_data_preprocess.ipynb`: trains a word2vec model to support the CNN embedding layer for the word embedding layer CNN
 
 - Emotion Classification/Sentiment Analysis
     - `model_code\text_CNN_word_embeddings.py`
@@ -39,13 +39,15 @@ This project performs a comparative analysis of modeling on text vs audio data t
 #### Audio Classification
 
 - Data Preprocessing
-    - In `preprocessing_notebooks\audio_data_preprocess.ipynb`, converts raw audio files into Mel-Frequency Cepstral Coefficients (MFCC) representations
+    - `preprocessing_notebooks\audio_data_preprocess.ipynb`: converts raw audio files into Mel-Frequency Cepstral Coefficients (MFCC) representations
+    - `preprocessing_notebooks\audio_preprocess_utils.py`: Util functions for preprocessing audio data
+    - `preprocessing_notebooks\featurize_from_wav.py`: featurizes a single wav audio file for inference
     - MFCC is a mathematical method which transforms the power spectrum of an audio signal to a small number of coefficients representing power of the audio signal in a frequency region (a region of pitch) taken with respect to time.
     - Adds white noise to the audio signals, helps to mask the effect of random noise present in the training set, also creates pseudo-new training samples and offsets the impact of noise intrinsic to the dataset.
     - Helps to make the dataset more representative of noisy real-world data
 
 - Data Visualization
-    - In `visualization_code\audio_visualization.py`, generates helpful data exploratory visualizations
+    - `visualization_code\audio_visualization.py`: generates data exploration visualizations
 
 - Emotion Classification/Sentiment Analysis
     - `model_code\audio_CNN.py`
@@ -84,8 +86,11 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
 ### Repo Overview/Structure
 
 - `/config_files`: stores config files to run model training from the command line
+    - `audio_cnn_infer_config.json`: example config to infer on a single featurized audio sample (converted into MFCC already)
     - `audio_cnn_train_config.json`: example config file to run the audio cnn train and eval
+    - `text_doc_embed_infer_config.json`: example config file to infer on a single document/ piece of text using document embeddings
     - `text_doc_embed_cnn_train_config.json`: example config file to run the text document embedding cnn train and eval
+    - `text_word_embed_infer_config.json`: example config file to infer on a single document/ piece of text using word embeddings
     - `text_word_embed_cnn_train_config.json`: example config file to run the word embedding layer cnn train and eval
 - `/data`: data used in model training (small enough size to store in repo)
     - `merged_training.pkl`: raw text data used in word embedding layer cnn
@@ -95,21 +100,24 @@ Note: Data too large to store in the repo is stored in this shared Google Drive 
     - `word_embedding_model_checkpoint.pth`: word embedding layer cnn model
 - `/model_code`: CNN and train and eval code
     - `audio_CNN.py`: audio cnn code
-    - `rnn_models.py`: code to run models from config file
     - `text_CNN_document_embeddings.py`: text document embedding cnn code
     - `text_CNN_word_embeddings.py`: text word embedding layer cnn code
 - `/plots`: loss plots from model training
     - `Audio_loss_plot.png`
     - `Text_loss_document_embeding_plot.png`
     - `Text_loss_word_embedding_plot.png`
-- `/preprocessing_notebooks`: notebooks for preprocessing data used to train these models
-    - `audio_data_preprocess.ipynb`
-    - `text_data_preprocess.ipynb`
+- `/preprocessing_notebooks`: notebooks for preprocessing data used to train and infer on these models
+    - `audio_data_preprocess.ipynb`: preprocesses the RAVDESS dataset
+    - `audio_preprocess_utils`: utils functions for preprocessing audio data into MFCC
+    - `featurize_from_wav.py`: preprocesses a single .wav audio file to infer on
+    - `text_data_preprocess.ipynb`: preprocesses the text dataset CARER
 - `/visualization_code`: data exploration visualization code
     - `audio_visualization.py`
     - `text_visualization.py`
+- `.gitignore`
 - `project_flow_chart.pdf`: project flow chart pdf, data and model pipeline
-- `results.txt`: model training results with different hyperparameters
+- `Results.csv`: model training results with different hyperparameters
+- `rnn_models.py`: code to run models from config file
 
 ### Getting Started
 
@@ -133,7 +141,8 @@ Ensure you have the following installed to run our models and preprocessing step
 
 #### Config Files
 
-Params:
+Train Params:
+- run_mode: train or infer
 - preprocessed_data_paths: List of paths to preprocessed data needed to run the model. (Expected structure per model in example configs)
 - save_dir: path to directory to save model results (trained model weights and biases as well as loss plot)
 - model_type: model to run (audio, text_doc, text_word)
@@ -143,22 +152,40 @@ Params:
 - dropout: dropout rate
 - word2vec_path: path to trained word2vec model for text word embedding layer cnn (null for audio cnn and document embedding cnn)
 
-#### Running model training and evaluation
+Infer Params:
+- run_mode: train or infer
+- model_type: model to infer with (audio, text_doc, text_word)
+- net_path: path to the model weights and biases saved from model training (pth file)
+- input: input to infer on. A string text for text models and a .npy file returned from running `featurize_from_wav.py` on a .wav audio file
+- dropout: dropout rate
+- word2vec_path: path to trained word2vec model for text cnns (null for audio cnn)
+
+#### Running model training and evaluation or inference
 
 1. clone the repo `git clone https://github.com/reejan6/CS5100.git`
 2. Download all necessary data
 3. Update the config files in `/config_files` to point to the correct data paths
 4. navigate to the `/model_code` folder. `cd model_code`
-5. Run the following command: `python run_models.py --config <path to config file>`
+5. Run the following command: `python run_models.py --config <path to config file>` (either inference or train config depending on goal)
 
 Examples:
 
 `python run_models.py --config "CS5100/config_files/audio_cnn_train_config.json"`
 
+`python run_models.py --config "CS5100/config_files/audio_cnn_infer_config.json"`
+
 `python run_models.py --config "CS5100/config_files/text_doc_embed_cnn_train_config.json"`
+
+`python run_models.py --config "CS5100/config_files/text_doc_embed_cnn_infer_config.json"`
 
 `python run_models.py --config "CS5100/config_files/text_word_embed_cnn_train_config.json"`
 
-### Acknowledgements
+`python run_models.py --config "CS5100/config_files/text_word_embed_cnn_infer_config.json"`
 
-### Resources
+### Resources/ References
+
+RAVDESS Dataset: https://zenodo.org/records/1188976
+
+CARER Dataset: https://paperswithcode.com/dataset/emotion
+
+RAVDESS Preprocessing Steps: https://nbviewer.org/github/IliaZenkov/transformer_cnn_parallel_audio_classification/blob/main/notebooks/Parallel_is_All_You_Want.ipynb#Load-Data-and-Extract-Features
