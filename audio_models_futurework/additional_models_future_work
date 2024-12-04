@@ -1,0 +1,6 @@
+This folder contains the models that can be used for future work. 
+MentalHealthHypo.md contains a methodology developed that is very efficient for SER purposes - it's based on The Fast Fourier Transform (FFT) is an efficient algorithm to compute the Discrete Fourier Transform (DFT) and its inverse. The DFT is used to convert a sequence of complex numbers from the time domain to the frequency domain.
+models_sharded.py - Contains architecture of the model
+hubert.py - Bert model for audio data.
+testing.py - Contains a pipeline responsible for testing the model.
+train.py - Contains a pipeline responsible for training the model.
