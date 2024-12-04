@@ -1,1 +1,1 @@
-Models for future work and improvements. I also aim to develop models using RNN's and Hybrid CNN-RNN models soon.
+Models for future work and improvements. Also aiming to develop models using RNN's and Hybrid CNN-RNN models soon.
