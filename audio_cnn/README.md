@@ -1,5 +1,4 @@
-# Spectra-Sense ReadMe
-# Author - Pranudeep
+# Audio_CNN Readme
 
 1. **Python Installation:** Ensure that Python version 3.7.16 is installed on your system.
 
